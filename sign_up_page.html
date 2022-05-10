@@ -42,12 +42,13 @@
             </form>
     </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
-    import {getDatabase, set, ref} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js"
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";   
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-analytics.js";
+    import {getDatabase, set, ref,get,child} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js"
+    //import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";   
+    //import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-analytics.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
   
@@ -66,35 +67,44 @@
     const app = initializeApp(firebaseConfig);
     //const analytics = getAnalytics(app);
     const database = getDatabase(app);
-    const auth = getAuth();
+    //const auth = getAuth();
 
-    btnRegister.addEventListener("click",(e)=>{
+    const email=document.getElementById("email");
+    const user = document.getElementById("user");
+    const password = document.getElementById("password");
+    const btnRegister = document.getElementById("btnRegister");
+    
+function RegisterUser(){
+    const dbRef= ref(database);
+    get(child(dbRef,"UsersList/"+user.value)).then((snapshot)=>{
+        if(snapshot.exists()){
+            alert('Account Already Registered');
+        }
+        else{
+         set(ref(database,"UsersList/"+user.value),{
+            username: user.value,
+            email: email.value,
+            password: encPass()
+        
+        })
+        .then(()=>{
+            alert('Account Registration Success')
+        })  
+        .catch((error) => {
+            alert('Error')
+        }) 
+        }
+    });
+}
 
-    var email=document.getElementById("email").value;
-    var user = document.getElementById("user").value;
-    var password = document.getElementById("password").value;
+    function encPass(){
+        var pass12 = CryptoJS.AES.encrypt(password.value,password.value);
+        return pass12.toString();
+    }
 
-        createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
+btnRegister.addEventListener("click", RegisterUser);
 
-    set(ref(database,'users/' + user.uid),{
-        user: user,
-        email:email,
-        password:password
-    })
-    alert('user created')
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-
-    alert(errorMessage);
-    // ..
-  });
-    })
+   
 
   </script>
 </html>

@@ -22,21 +22,24 @@
             <span class="title">Login</span>
 
             <form action="#">
-                <div class="input-field">
+                <!-- <div class="input-field">
                     <input type="text" id="email" placeholder="Enter your email" required>
                     <i class="uil uil-envelope"></i>
-                </div>
+                </div> -->
+                <div class="input-field">
+                    <input type="text" id="user" placeholder="Enter your username" required>
+                    <i class="uil uil-user"></i>
+                </div>    
                 <div class="input-field">
                     <input type="password" id="password" placeholder="Enter your password" required>
                     <i class="uil uil-lock"></i>
                 </div>
-                <!-- <div class="checkbox-text">
+                <div class="checkbox-text">
                     <div class="checkbox-content">
                         <input type="checkbox" id="logCheck">
                         <label for="logCheck" class="text">Remember Me</label>
                     </div>
-                    <a href="#" class="text">Forgot Password?</a>
-                </div> -->
+                </div> 
                 <div class="input-field button">
                    <!-- <a href="upload_image_page.html" class="text">-->
                     <input type="button" id="btnLogin" value="Login Now">
@@ -53,12 +56,13 @@
         </div>
     </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+
 <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
-    import {getDatabase, set, ref, update} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js"
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";   
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-analytics.js";
+    import {getDatabase, set, ref, child, get} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js"
+       
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
   
@@ -76,37 +80,56 @@
   
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+    
     const database = getDatabase(app);
-    const auth = getAuth();
+    
+
+    const user=document.getElementById("user");
+    const password = document.getElementById("password");
     const btn_Login = document.getElementById("btnLogin");
    
 
-btn_Login.addEventListener("click",(e)=>{
-    var email=document.getElementById("email").value;
-    var password = document.getElementById("password").value;
+    function AuthenticateUser(){
+        console.log("Authent")
+        const dbref= ref(database);
+        get(child(dbref,"UsersList/"+user.value)).then((snapshot)=>{
+        if(snapshot.exists()){
+            let dbpass= decPass(snapshot.val().password);
+            if(dbpass== password.value){
+                login();
+            
+        }
+        else{
+            alert("user does not exist")
+        }
+    }
+    else{
+        alert("username or password incorrect")
+    }
+    });
+    
+    }
 
-        signInWithEmailAndPassword(auth, email, password)
-   .then((userCredential) => {
-    // Signed in 
-    console.log("Hello im in")
-    const user = userCredential.user;
+    function decPass(dbpass){
+        var pass12 = CryptoJS.AES.decrypt(dbpass,password.value);
+        return pass12.toString(CryptoJS.enc.Utf8);
+    }
 
-    const dt = new Date();
-    update(ref(database, 'users/' +user.uid),{
-        lastLogin: dt,
-    })
-    alert('user logged in')
-    // ...
-    window.location.href="upload_image_page.html";
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+    function login(user){
+        let keepLoggedIn=document.getElementById('logCheck').checked;
 
-    alert(errorMessage);
-    // ..
-  });
-    })
+        if(!keepLoggedIn){
+            sessionStorage.setItem('user',JSON.stringify(user));
+            window.location="upload_image_page.html";
+        }
+        else{
+            localStorage.setItem('keepLoggedIn','yes');
+            localStorage.setItem('user',JSON.stringify(user));
+            window.location="upload_image_page.html";
+
+        }
+    }
+
+btn_Login.addEventListener("click",AuthenticateUser);
   </script>
 </html>

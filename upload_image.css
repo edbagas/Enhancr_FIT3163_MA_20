@@ -10,6 +10,7 @@ html,body{
   height: 100%;
   place-items: center;
   text-align: center;
+  background: rgb(160, 206, 247);
 }
 .container{
   height: 350px;
@@ -21,7 +22,7 @@ html,body{
   height: 300px;
   width: 100%;
   border-radius: 10px;
-  background: #fff;
+  background: rgb(160, 206, 247);
   border: 2px dashed #c2cdda;
   display: flex;
   align-items: center;
