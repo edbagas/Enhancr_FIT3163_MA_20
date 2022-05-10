@@ -23,6 +23,32 @@
 
             <form action="#">
                 <div class="input-field">
+                    <input type="text" placeholder="Enter your email" required>
+                    <i class="uil uil-envelope"></i>
+                </div>
+                <div class="input-field">
+                    <input type="password" placeholder="Enter your password" required>
+                    <i class="uil uil-lock"></i>
+                </div>
+
+                <div class="input-field button">
+                   <!-- <a href="upload_image_page.html" class="text">-->
+                    <input type="button" id="btnLogin" value="Login Now">
+                    
+                    </div>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        <div class="form login">
+            <span class="title">Registeration</span>
+
+            <form action="#">
+                <div class="input-field">
+                    <input type="text" id="user" placeholder="Enter your username" required>
+                    <i class="uil uil-user"></i>
+                </div>
+                <div class="input-field">
                     <input type="text" id="email" placeholder="Enter your email" required>
                     <i class="uil uil-envelope"></i>
                 </div>
@@ -30,34 +56,17 @@
                     <input type="password" id="password" placeholder="Enter your password" required>
                     <i class="uil uil-lock"></i>
                 </div>
-                <!-- <div class="checkbox-text">
-                    <div class="checkbox-content">
-                        <input type="checkbox" id="logCheck">
-                        <label for="logCheck" class="text">Remember Me</label>
-                    </div>
-                    <a href="#" class="text">Forgot Password?</a>
-                </div> -->
                 <div class="input-field button">
-                   <!-- <a href="upload_image_page.html" class="text">-->
-                    <input type="button" id="btnLogin" value="Login Now">
-                    
+                    <input type="button" id="btnRegister" value="Register">
                     </div>
             </form>
-            
-            <div class="login-signup">
-                <span class="text">Not a member?
-                    <a href="sign_up_page.html" class="text signup-text">Signup now</a>
-                </span>
-                </div>
-            
-        </div>
     </div>
 </body>
 <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
     import {getDatabase, set, ref, update} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js"
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";   
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";   
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-analytics.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
@@ -65,31 +74,62 @@
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
-    apiKey: "AIzaSyCEnqohf95KsGaXSUFd2TUTkEv7tM3mpCo",
-    authDomain: "enhancer-b0580.firebaseapp.com",
-    databaseURL: "https://enhancer-b0580-default-rtdb.firebaseio.com",
-    projectId: "enhancer-b0580",
-    storageBucket: "enhancer-b0580.appspot.com",
-    messagingSenderId: "903561426277",
-    appId: "1:903561426277:web:624db060b0f2be0220dd8c"
-};
+        apiKey: "AIzaSyCEnqohf95KsGaXSUFd2TUTkEv7tM3mpCo",
+        authDomain: "enhancer-b0580.firebaseapp.com",
+        databaseURL: "https://enhancer-b0580-default-rtdb.firebaseio.com",
+        projectId: "enhancer-b0580",
+        storageBucket: "enhancer-b0580.appspot.com",
+        messagingSenderId: "903561426277",
+        appId: "1:903561426277:web:624db060b0f2be0220dd8c"
+  };
   
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const database = getDatabase(app);
     const auth = getAuth();
-    const btn_Login = document.getElementById("btnLogin");
-   
 
-btn_Login.addEventListener("click",(e)=>{
+btnRegister.addEventListener("click",(e) =>{      
+    
+    console.log("i am in")
+    var email=document.getElementById("email").value;
+    var user = document.getElementById("user").value;
+    var password = document.getElementById("password").value;
+
+        createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+
+    set(ref(database,'users/' + user.uid),{
+        user: user,
+        email:email,
+        password:password
+    })
+    alert('user created')
+    // ...
+    window.location.href="upload_image_page.html";
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorMessage)
+    alert('user created')
+    // ...
+    window.location.href="upload_image_page.html";
+    
+    // ..
+  });
+    })
+
+btnLogin.addEventListener("click",(e)=>{
     var email=document.getElementById("email").value;
     var password = document.getElementById("password").value;
 
         signInWithEmailAndPassword(auth, email, password)
    .then((userCredential) => {
     // Signed in 
-    console.log("Hello im in")
+    
     const user = userCredential.user;
 
     const dt = new Date();
