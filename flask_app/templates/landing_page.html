@@ -1,0 +1,44 @@
+<!-- test -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='stylesheet.css')}}">
+    <title>Enhancr Landing Page</title>
+    
+</head>
+<body>
+    <header>
+        <div style="display:flex">
+            <a href="#" class="logo"><img src="{{url_for('static',filename='heart_logo.png')}}" width="100" height="100"></a>
+            <div style="padding-top:25px; padding-left: 10px;" >
+                <h2><a href="#" class="logo">Enhancr</a></h2>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <a href="/login_page">Login</a>
+            <a href="/signup">Sign Up</a> 
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="description">
+            <h1>Welcome to Enhancr!</h1>
+            <p>Enhancr is a web application that aims to make lives easier in the medical sector by providing enhanced versions of CT and MRI scans which can be used for better medical interpretations by radiologists.
+            </p>
+        </div>
+        <div class="navigation">
+            <a href="/login_page">
+            <button class="Login">Login</button>
+            </a>
+            <a href="/signup">
+            <button class="SignUp">Sign Up</button>
+            </a>
+        </div>
+    </div> 
+    
+</body>
+</html>
