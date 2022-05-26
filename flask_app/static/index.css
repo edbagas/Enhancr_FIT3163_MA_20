@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+body {
+    background-color: rgb(160, 206, 247);
+    height: 100%;
+}
+
+
+form  {
+    margin-top: 300px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-evenly;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+label{
+    align-items: center;
+}
+
+.custom-input {
+    /* border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 30px;
+    background-color: black;
+    color: white; */
+    align-items: center;
+    width: 300px;
+    height: 100px;
+    border: none;
+    background-color:rgb(53, 179, 177) ; 
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 0 #f97f06;
+    transition: ease-out 0.3s;
+    font-size: 2rem;
+    font-weight: bold;
+    outline: none;
+}
+
+.custom-input:hover{
+    box-shadow: inset 300px 0 0 0 #f90606;
+    cursor: pointer;
+    color: white;
+}
+
+
+input[type="submit" i] {
+    /* border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 30px;
+    background-color: black;
+    color: white; */
+    width: 300px;
+    height: 100px;
+    border: none;
+    background-color:rgb(53, 179, 177) ; 
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 0 #f97f06;
+    transition: ease-out 0.3s;
+    font-size: 2rem;
+    font-weight: bold;
+    outline: none;
+}
+
+
+input[type="submit" i]:hover{
+    box-shadow: inset 300px 0 0 0 #f90606;
+    cursor: pointer;
+    color: white;
+}
